@@ -1,0 +1,49 @@
+#Ensure external networks are created
+version: '3.9'
+services:
+  remontadacrypto-backend:
+    build:
+      context: ../container_data/APIV1/docker
+      dockerfile: Dockerfile
+    container_name: remontadacrypto-backend
+    restart: always
+    networks:
+      - remontadacrypto-frontend
+      - remontadacrypto-backend
+    depends_on:
+      - remontadacrypto-mysql
+    volumes:
+      - ../container_data:/var/www/app
+    ports:
+      - 8000:80
+  # remontadacrypto-php-apache:
+  #   extends:
+  #     file: ./apache-php-service/docker-compose.yml
+  #     service: remontadacrypto-php-apache
+  #   restart: always
+  #   networks:
+  #     - remontadacrypto-frontend
+  #     - remontadacrypto-backend
+  #   depends_on:
+  #     - remontadacrypto-mysql
+  remontadacrypto-mysql:
+    extends:
+      file: ./mysql-service/docker-compose.yml
+      service: remontadacrypto-mysql
+    restart: always
+    networks:
+      - remontadacrypto-backend
+
+# volumes:
+#   mysql_data:
+#     external: true
+#   apache_data:
+#     external: true
+#   php_data:
+#     external: true
+
+networks:
+  remontadacrypto-frontend:
+    external: true
+  remontadacrypto-backend:
+    external: true

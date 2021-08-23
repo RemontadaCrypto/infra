@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  remontadacrypto-mysql:
+    #platform: linux/x86_64
+    image: mysql:8.0.19
+    container_name: remontadacrypto-mysql
+    volumes:
+      - ./MYSQL_HOME/dbinit:/docker-entrypoint-initdb.d
+       # - ./MYSQL_HOME/mysql_data:/var/lib/mysql
+      #- mysql_data:/var/lib/mysql:rw
+    environment:
+      - MYSQL_USER=MYSQL_USER
+      - MYSQL_PASSWORD=MYSQL_PASSWORD
+      - MYSQL_DATABASE=MY_DATABASE
+      - MYSQL_ROOT_PASSWORD=MYSQL_ROOT_PASSWORD
+    ports:
+      - 3306:3306
+    command: mysqld --lower_case_table_names=1 --skip-ssl --character-set-server=utf8mb4  --explicit_defaults_for_timestamp
